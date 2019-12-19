@@ -17,6 +17,8 @@
 		<h2><?php echo $_SESSION['game']['name']; ?></h2>
 		<h2>Unique game code: <?php echo $_SESSION['game']['id']; ?></h2>
 
+		<button type="button" id="refresh-current-players-btn" class="btn btn-primary">Refresh</button>
+
 		<div id="current-players">
 
 		</div>
@@ -36,16 +38,21 @@
 			return <?php echo $_SESSION['game']['id']; ?>;
 		}
 
+		// $(document).ready(function() {
+		// 	getCurrentPlayers();
+		// 	setInterval(executeQuery, 5000);
+		// });
+		//
+		// function executeQuery() {
+		// 	getCurrentPlayers(getGameID());
+		// 	setInterval(executeQuery, 5000);
+		// }
+
 		$(document).ready(function() {
-			getCurrentPlayers();
-			setInterval(executeQuery, 5000);
+			$("#refresh-current-players-btn").on('click', function() {
+				getCurrentPlayers(getGameID());
+			})
 		});
-
-		function executeQuery() {
-			getCurrentPlayers(getGameID());
-			setInterval(executeQuery, 5000);
-		}
-
 
 		// updates the info in the update-item-info form modal
 		function getCurrentPlayers(gameID) {

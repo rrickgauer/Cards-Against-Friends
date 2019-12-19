@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<!-- <?php session_start(); ?> -->
 <?php include('functions.php'); ?>
 
 
@@ -40,15 +40,15 @@
 		return <?php echo $_SESSION['game']['id']; ?>;
 	}
 
-	$(document).ready(function() {
-		getCurrentPlayers();
-		setInterval(executeQuery, 5000);
-	});
-
-	function executeQuery() {
-		getCurrentPlayers(getGameID());
-		setInterval(executeQuery, 5000);
-	}
+	// $(document).ready(function() {
+	// 	getCurrentPlayers();
+	// 	setInterval(executeQuery, 5000);
+	// });
+	//
+	// function executeQuery() {
+	// 	getCurrentPlayers(getGameID());
+	// 	setInterval(executeQuery, 5000);
+	// }
 
 
 	// updates the info in the update-item-info form modal
