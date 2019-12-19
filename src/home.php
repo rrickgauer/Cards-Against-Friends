@@ -24,11 +24,9 @@
 
 			<div class="col-sm-12 col-md-6">
 				<h2>Join a game</h2>
-				<form class="form" method="post">
-					<input type="text" name="title" class="form-control" placeholder="Enter custom game ID"><br>
-					<input type="submit" value="Join game" class="btn btn-primary">
-				</form>
+				<a href="join-game.php"><button type="button" name="button" class="btn btn-primary">Join a game</button></a>
 			</div>
+
 		</div>
 
 	</div>

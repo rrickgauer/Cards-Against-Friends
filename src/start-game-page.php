@@ -27,7 +27,20 @@ $game = getMostRecentCreatedGameData();		// get the data of the most recent game
 
 
 			<div id="current-players-section">
+				<ul>
 
+					<?php
+
+					$players = getConnectedPlayersData($game['id']);
+
+					while ($player = $players->fetch(PDO::FETCH_ASSOC)) {
+						echo '<li>' . $player['username'] . '</li>';
+					}
+
+
+					?>
+
+				</ul>
 
 
 			</div>
