@@ -10,6 +10,6 @@ insertSubmittedQuestion($_GET['gameID'], $_GET['blackCardID']);
 
 // print the new black card data
 $card = getBlackCardData($_GET['blackCardID']);
-echo '<p>' . $card['text'] . '</p>';
+echo '<p class="black-card-display-text">' . $card['text'] . '</p>';
 
 ?>

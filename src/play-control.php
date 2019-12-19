@@ -116,7 +116,7 @@ function printBattingOrder() {
 	echo '<ul>';
 	while ($player = $players->fetch(PDO::FETCH_ASSOC)) {
 		echo '<li>';
-		echo $player['username'];
+		echo $player['username'] . ' - ' . $player['id'];
 		echo '</li>';
 	}
 

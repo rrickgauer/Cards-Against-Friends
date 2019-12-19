@@ -240,21 +240,22 @@ function getRandomBlackDeck($gameID, $limit) {
   return $sql;
 }
 
-function getBlackCardData($id) {
+function updateAllSubmittedQuestions($gameID, $open) {
   $pdo = dbConnect();
-  $sql = $pdo->prepare('SELECT * FROM BlackCards WHERE id=:id');
+  $sql = $pdo->prepare('UPDATE Submitted_Questions SET open=:open WHERE game_id=:gameID');
 
   // filter variables
-  $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+  $open = filter_var($open, FILTER_SANITIZE_STRING);
 
   // bind the parameters
-  $sql->bindParam(':id', $id, PDO::PARAM_INT);
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+  $sql->bindParam(':open', $open, PDO::PARAM_STR);
 
   // execute sql statement
   $sql->execute();
-  $blackCard = $sql->fetch(PDO::FETCH_ASSOC);
-  return $blackCard;
 }
+
 
 function insertSubmittedQuestion($gameID, $blackCardID) {
   $pdo = dbConnect();
@@ -275,21 +276,22 @@ function insertSubmittedQuestion($gameID, $blackCardID) {
   $sql->execute();
 }
 
-function updateAllSubmittedQuestions($gameID, $open) {
+function getBlackCardData($id) {
   $pdo = dbConnect();
-  $sql = $pdo->prepare('UPDATE Submitted_Questions SET open=:open WHERE game_id=:gameID');
+  $sql = $pdo->prepare('SELECT * FROM BlackCards WHERE id=:id');
 
   // filter variables
-  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
-  $open = filter_var($open, FILTER_SANITIZE_STRING);
+  $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
   // bind the parameters
-  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
-  $sql->bindParam(':open', $open, PDO::PARAM_STR);
+  $sql->bindParam(':id', $id, PDO::PARAM_INT);
 
   // execute sql statement
   $sql->execute();
+  $blackCard = $sql->fetch(PDO::FETCH_ASSOC);
+  return $blackCard;
 }
+
 
 
 
