@@ -164,6 +164,98 @@ function getCategoriesData() {
   return $sql;
 }
 
+function insertSelectedGameCategories($gameID, $categoryID) {
+
+  $pdo = dbConnect();
+  // $sql = $pdo->prepare('SELECT * FROM Players WHERE game_id=:gameID AND username=:username LIMIT 1');
+
+
+  $sql = $pdo->prepare('INSERT INTO Selected_Categories (game_id, category_id) VALUES (:gameID, :categoryID)');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+  $categoryID = filter_var($categoryID, FILTER_SANITIZE_NUMBER_INT);
+
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+  $sql->bindParam(':categoryID', $categoryID, PDO::PARAM_INT);
+
+
+  // execute sql statement
+  $sql->execute();
+
+
+}
+
+function getSelectedGameCategories($gameID) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('SELECT Selected_Categories.game_id, Selected_Categories.category_id, Categories.name from Selected_Categories, Categories WHERE Selected_Categories.category_id=Categories.id and Selected_Categories.game_id=:gameID');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+
+
+  // execute sql statement
+  $sql->execute();
+
+  return $sql;
+}
+
+function getGameCardLimit($gameID) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('SELECT ((SELECT Games.rounds from Games where id=:gameID) * (SELECT count(*) from Players where game_id=:gameID)) as "product"');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+
+  // execute sql statement
+  $sql->execute();
+
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+  return $result['product'];
+}
+
+function getRandomBlackDeck($gameID, $limit) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('SELECT BlackCards.id from BlackCards, Selected_Categories where BlackCards.category_id=Selected_Categories.category_id and Selected_Categories.game_id=:gameID order by rand() limit :setLimit');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+  $limit = filter_var($limit, FILTER_SANITIZE_NUMBER_INT);
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+  $sql->bindParam(':setLimit', $limit, PDO::PARAM_INT);
+
+  // execute sql statement
+  $sql->execute();
+
+  return $sql;
+}
+
+function getBlackCardData($id) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('SELECT * FROM BlackCards WHERE id=:id');
+
+  // filter variables
+  $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+  // bind the parameters
+  $sql->bindParam(':id', $id, PDO::PARAM_INT);
+
+  // execute sql statement
+  $sql->execute();
+  $blackCard = $sql->fetch(PDO::FETCH_ASSOC);
+  return $blackCard;
+}
+
 
 
 ?>

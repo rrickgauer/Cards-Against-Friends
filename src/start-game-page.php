@@ -3,6 +3,21 @@
 
 <?php
 
+if(isset($_POST['categories'])) {
+	$count = 0;
+	while ($count < count($_POST['categories'])) {
+		insertSelectedGameCategories($_SESSION['game']['id'], $_POST['categories'][$count]);
+		$count++;
+	}
+	header('Location: play-control.php');
+	exit;
+
+}
+
+?>
+
+<?php
+
 function getOptionString($value, $display) {
 	return "<option value=\"$value\">$display</option>";
 }
@@ -36,7 +51,7 @@ function getOptionString($value, $display) {
 					</div>
 
 					<div class="card-body">
-						<form class="form">
+						<form class="form" action="start-game-page.php" method="post">
 							<!-- open or close player connections -->
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" name="open" id="inlineRadio1" value="option1" checked>
@@ -67,7 +82,7 @@ function getOptionString($value, $display) {
 						<div class="form-group">
 							<label for="categories">Categories</label>
 
-								<select class="form-control" name="categories" id="categories" multiple="multiple">
+								<select class="form-control" name="categories[]" id="categories" multiple="multiple">
 									<?php
 									$categories = getCategoriesData();
 									while ($category = $categories->fetch(PDO::FETCH_ASSOC)) {
@@ -79,12 +94,13 @@ function getOptionString($value, $display) {
 
 						</div>
 
+						<input type="submit" value="Start game" class="btn btn-primary">
+
 					</form>
 					</div>
 
-					<div class="card-footer">
-						<button type="button" name="button" class="btn btn-primary">Start game</button>
-					</div>
+
+
 
 				</div>
 
@@ -138,7 +154,13 @@ function getOptionString($value, $display) {
 				getCurrentPlayers(getGameID());
 			});
 
-			$('#categories').select2();
+			$('#categories').select2({
+				placeholder: 'Select categories',
+  			allowClear: true,
+			});
+
+			$('#categories').val('1');
+			$('#categories').trigger('change');
 		});
 
 		// updates the info in the update-item-info form modal
