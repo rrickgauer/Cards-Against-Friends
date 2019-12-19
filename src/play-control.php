@@ -1,15 +1,10 @@
-<?php session_start(); ?>
-<?php include('functions.php'); ?>
-
 <?php
+session_start();
+include('functions.php');
 $limit = getGameCardLimit($_SESSION['game']['id']);
 $blackDeck = getRandomBlackDeck($_SESSION['game']['id'], $limit);
 $blackDeckCounter = 0;
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -45,6 +40,7 @@ $blackDeckCounter = 0;
 				<div class="card">
 					<div class="card-header">
 						<h4>Black Card Area</h4>
+						<p>Card <span id="card-count">0</span> of <span id="card-total"><?php echo $limit; ?></span></p>
 					</div>
 
 					<div class="card-body" id="black-card-area">
@@ -58,15 +54,6 @@ $blackDeckCounter = 0;
 			</div>
 		</div>
 
-
-
-
-
-
-
-
-
-
 	</div>
 </body>
 
@@ -77,6 +64,8 @@ while ($blackCard = $blackDeck->fetch(PDO::FETCH_ASSOC)) {
 	echo 'blackDeckIndex.push(' . $blackCard['id'] . ');';
 }
 ?>
+
+var gameID = <?php echo $_SESSION['game']['id']; ?>;
 
 
 $(document).ready(function() {
@@ -89,6 +78,7 @@ $(document).ready(function() {
 			$(this).attr("disabled", "disabled");
 		}
 
+		incrementCardCount();
 	})
 });
 
@@ -102,17 +92,15 @@ function loadBlackCard(blackCardID) {
 		}
 	};
 
-	xhttp.open("GET", "get-black-card.php?id=" + blackCardID, true);
+	xhttp.open("GET", "get-black-card.php?blackCardID=" + blackCardID + '&gameID=' + gameID, true);
 	xhttp.send();
 }
 
-
-
-
-
-
-
-
+// add 1 to card-count
+function incrementCardCount() {
+	var currentCount = $("#card-count").html();
+	$("#card-count").html(parseInt(currentCount) + 1);
+}
 
 
 </script>
@@ -125,9 +113,7 @@ function loadBlackCard(blackCardID) {
 <?php
 function printBattingOrder() {
 	$players = getConnectedPlayersData($_SESSION['game']['id']);
-
 	echo '<ul>';
-
 	while ($player = $players->fetch(PDO::FETCH_ASSOC)) {
 		echo '<li>';
 		echo $player['username'];

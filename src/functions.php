@@ -256,6 +256,41 @@ function getBlackCardData($id) {
   return $blackCard;
 }
 
+function insertSubmittedQuestion($gameID, $blackCardID) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('INSERT INTO Submitted_Questions (game_id, blackcard_id, open) VALUES (:gameID, :blackCardID, :open)');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+  $blackCardID = filter_var($blackCardID, FILTER_SANITIZE_NUMBER_INT);
+
+  $open = 'y';
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+  $sql->bindParam(':blackCardID', $blackCardID, PDO::PARAM_INT);
+  $sql->bindParam(':open', $open, PDO::PARAM_STR);
+
+  // execute sql statement
+  $sql->execute();
+}
+
+function updateAllSubmittedQuestions($gameID, $open) {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('UPDATE Submitted_Questions SET open=:open WHERE game_id=:gameID');
+
+  // filter variables
+  $gameID = filter_var($gameID, FILTER_SANITIZE_NUMBER_INT);
+  $open = filter_var($open, FILTER_SANITIZE_STRING);
+
+  // bind the parameters
+  $sql->bindParam(':gameID', $gameID, PDO::PARAM_INT);
+  $sql->bindParam(':open', $open, PDO::PARAM_STR);
+
+  // execute sql statement
+  $sql->execute();
+}
+
 
 
 ?>
