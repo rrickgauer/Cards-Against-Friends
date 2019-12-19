@@ -37,20 +37,18 @@
 	});
 
 	function getGameID() {
-		return $("#refresh-players-btn").attr("data-gameid");
-	}
-
-	function executeQuery() {
-
-		getCurrentPlayers(getGameID());
-
-		setInterval(executeQuery, 5000); // you could choose not to continue on failure...
+		return <?php echo $_SESSION['game']['id']; ?>;
 	}
 
 	$(document).ready(function() {
-
+		getCurrentPlayers();
 		setInterval(executeQuery, 5000);
 	});
+
+	function executeQuery() {
+		getCurrentPlayers(getGameID());
+		setInterval(executeQuery, 5000);
+	}
 
 
 	// updates the info in the update-item-info form modal
