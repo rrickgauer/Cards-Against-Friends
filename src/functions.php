@@ -76,9 +76,6 @@ function insertPlayer($gameID, $username) {
 
    // execute sql statement
    $sql->execute();
-
-
-
 }
 
 
@@ -157,6 +154,14 @@ function getGameData($gameID) {
   $sql->execute();
 
   return $sql->fetch(PDO::FETCH_ASSOC);
+}
+
+function getCategoriesData() {
+  $pdo = dbConnect();
+  $sql = $pdo->prepare('SELECT * FROM Categories');
+  $sql->execute();
+
+  return $sql;
 }
 
 
