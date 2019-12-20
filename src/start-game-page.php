@@ -9,6 +9,11 @@ if(isset($_POST['categories'])) {
 		insertSelectedGameCategories($_SESSION['game']['id'], $_POST['categories'][$count]);
 		$count++;
 	}
+
+	// deal out the player's white cards
+	// 10 random cards per person
+
+
 	header('Location: play-control.php');
 	exit;
 
