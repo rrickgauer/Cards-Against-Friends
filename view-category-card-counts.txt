@@ -1,0 +1,22 @@
+SELECT
+	Categories.id as category_id,
+    Categories.name as category_name,
+	COALESCE(white_count, 0) AS white_count,
+	COALESCE(black_count, 0) AS black_count
+FROM Categories
+
+
+LEFT JOIN (
+	SELECT category_id, COUNT(*) AS white_count
+	FROM WhiteCards
+	GROUP BY category_id
+)
+white_counts ON white_counts.category_id = Categories.id
+
+
+LEFT JOIN (
+	SELECT category_id, COUNT(*) AS black_count
+	FROM BlackCards
+	GROUP BY category_id
+)
+black_counts ON black_counts.category_id = Categories.id
