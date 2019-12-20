@@ -291,8 +291,4 @@ function getBlackCardData($id) {
   $blackCard = $sql->fetch(PDO::FETCH_ASSOC);
   return $blackCard;
 }
-
-
-
-
 ?>
